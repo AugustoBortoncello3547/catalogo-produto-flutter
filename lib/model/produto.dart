@@ -1,7 +1,7 @@
 class Produto {
   int? id;
   String? nome;
-  int? valor;
+  double? valor;
   String? categoria;
 
   Produto({
