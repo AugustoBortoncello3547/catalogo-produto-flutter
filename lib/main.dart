@@ -15,11 +15,11 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  var bdHelper = BancoHelper();
+  final bdHelper = BancoHelper();
   final List<Produto> _dados = [];
 
   void carregarProdutosSalvas() async {
-    var r = await bdHelper.buscarProdutos();
+    final r = await bdHelper.buscarProdutos();
 
     setState(() {
       _dados.clear();
@@ -36,46 +36,50 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Produtos'),
+          title: const Text('Catálogo de Produtos'), // Alteração do título
         ),
         body: SafeArea(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: ListView.builder(
+            child: _dados.isEmpty
+                ? const Text('Nenhum produto disponível')
+                : ListView.builder(
                     itemCount: _dados.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(_dados[index].nome ?? 'Nome não informado'),
-                        //Função do click/Toque
-                        onTap: () async {
-                          var param = _dados[index];
-
-                          await Navigator.push(
+                      final produto = _dados[index];
+                      return Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.info_outline),
+                          trailing: Text(
+                            'R\$ ${produto.valor ?? 'Não informado'}',
+                            style: const TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.w700),
+                          ),
+                          title: Text(produto.nome ?? 'Nome não informado'),
+                          onTap: () async {
+                            final param = _dados[index];
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProdutoDetalhe(
-                                      informacaoProduto: param)));
-
-                          carregarProdutosSalvas();
-                        },
+                                builder: (context) => ProdutoDetalhe(
+                                  informacaoProduto: param,
+                                ),
+                              ),
+                            );
+                            carregarProdutosSalvas();
+                          },
+                        ),
                       );
                     },
                   ),
-                ),
-              ],
-            ),
           ),
         ),
-        /*Utilizado o Builder para facilitar depois a navegação entre telas */
         floatingActionButton: Builder(
           builder: (BuildContext context) {
             return FloatingActionButton(
-              child: const Icon(Icons.person_add),
+              child: const Icon(Icons.playlist_add),
               onPressed: () async {
                 await Navigator.push(
                     context,

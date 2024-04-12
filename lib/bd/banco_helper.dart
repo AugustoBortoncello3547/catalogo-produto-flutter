@@ -34,7 +34,7 @@ class BancoHelper {
         CREATE TABLE $tabelaProduto (
           $colunaId INTEGER PRIMARY KEY,
           $colunaNome TEXT NOT NULL,
-          $colunaValor INTEGER NOT NULL,
+          $colunaValor REAL NOT NULL,
           $colunaCategoria TEXT NOT NULL
         )
       ''');
@@ -82,7 +82,7 @@ class BancoHelper {
       for (final {
             colunaId: pId as int,
             colunaNome: pNome as String,
-            colunaValor: pValor as int,
+            colunaValor: pValor as double,
             colunaCategoria: pCategoria as String,
           } in produtosNoBanco)
         Produto(id: pId, nome: pNome, valor: pValor, categoria: pCategoria),
