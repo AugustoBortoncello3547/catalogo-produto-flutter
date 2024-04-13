@@ -92,11 +92,16 @@ class BancoHelper {
     return await _bancoDeDados.insert(tabelaProduto, row);
   }
 
-  Future<List<Produto>> buscarProdutos() async {
+  Future<List<Produto>> buscarProdutos(String pesquisa) async {
     await iniciarBD();
 
-    final List<Map<String, Object?>> produtosNoBanco =
-        await _bancoDeDados.query(tabelaProduto);
+    List<Map<String, Object?>> produtosNoBanco = [];
+    if (pesquisa.trim() != "") {
+      produtosNoBanco = await _bancoDeDados.query(tabelaProduto,
+          where: '$colunaNome LIKE ?', whereArgs: ['%$pesquisa%']);
+    } else {
+      produtosNoBanco = await _bancoDeDados.query(tabelaProduto);
+    }
 
     return [
       for (final {
