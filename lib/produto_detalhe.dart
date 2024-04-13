@@ -157,7 +157,8 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe> {
                       child: const Text(
                         'Deletar',
                         style: TextStyle(
-                          color: Colors.white, // Definindo a cor do texto como branco
+                          color: Colors
+                              .white, // Definindo a cor do texto como branco
                         ),
                       ),
                     ),
